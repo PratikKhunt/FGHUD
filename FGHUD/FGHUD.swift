@@ -30,7 +30,7 @@ class FGHUD: UIView {
             return nil
         }
         let hud = FGHUD.init(frame: .init(x: 0, y: 0, width: 100, height: 100))
-        hud.layer.cornerRadius = 8
+        hud.layer.cornerRadius = 10
         hud.backgroundColor = FGHUDTintColor
         
         let contentLb = UILabel.init(frame: .zero)
@@ -239,7 +239,7 @@ private class FGHUDAccessoryView: UIView {
 //MARK: -
 //MARK: UIView
 public extension UIView {
-    func HUDLoading() {
+    func showHUD() {
         DispatchQueue.main.async {
             if let tmp = objc_getAssociatedObject(self, &FGHUDKey) as? FGHUD {
                 tmp.hideWithoutAnimation()
@@ -248,7 +248,7 @@ public extension UIView {
             objc_setAssociatedObject(self, &FGHUDKey, hud, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    func HUD(_ type:HUDType) {
+    func showHUD(_ type:HUDType) {
         DispatchQueue.main.async {
             if let tmp = objc_getAssociatedObject(self, &FGHUDKey) as? FGHUD {
                 tmp.hideWithoutAnimation()
@@ -257,19 +257,18 @@ public extension UIView {
             objc_setAssociatedObject(self, &FGHUDKey, hud, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    func HUDHide() {
-        if let hud = objc_getAssociatedObject(self, &FGHUDKey) as? FGHUD {
-            DispatchQueue.main.async {
+    func hideHUD() {
+        DispatchQueue.main.async {
+            if let hud = objc_getAssociatedObject(self, &FGHUDKey) as? FGHUD {
                 hud.hide()
             }
         }
     }
 }
-
 //MARK: -
 //MARK: UIViewController
 public extension UIViewController {
-    func HUDLoading() {
+    func showHUD() {
         DispatchQueue.main.async {
             if let tmp = objc_getAssociatedObject(self, &FGHUDKey) as? FGHUD {
                 tmp.hideWithoutAnimation()
@@ -278,7 +277,7 @@ public extension UIViewController {
             objc_setAssociatedObject(self, &FGHUDKey, hud, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    func HUD(_ type:HUDType) {
+    func showHUD(_ type:HUDType) {
         DispatchQueue.main.async {
             if let tmp = objc_getAssociatedObject(self, &FGHUDKey) as? FGHUD {
                 tmp.hideWithoutAnimation()
@@ -287,26 +286,11 @@ public extension UIViewController {
             objc_setAssociatedObject(self, &FGHUDKey, hud, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    func HUDHide() {
-        if let hud = objc_getAssociatedObject(self, &FGHUDKey) as? FGHUD {
-            DispatchQueue.main.async {
+    func hideHUD() {
+        DispatchQueue.main.async {
+            if let hud = objc_getAssociatedObject(self, &FGHUDKey) as? FGHUD {
                 hud.hide()
             }
         }
     }
-}
-
-public func HUDLoading() {
-    let window = UIApplication.shared.keyWindow
-    window?.HUDLoading()
-}
-
-public func HUD(_ type:HUDType) {
-    let window = UIApplication.shared.keyWindow
-    window?.HUD(type)
-}
-
-public func HUDHide() {
-    let window = UIApplication.shared.keyWindow
-    window?.HUDHide()
 }
